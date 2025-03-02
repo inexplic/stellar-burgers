@@ -94,6 +94,7 @@ const burgerConstructorSlice = createSlice({
         (state, action: PayloadAction<TOrder>) => {
           state.orderRequest = false;
           state.orderModalData = action.payload;
+          state.constructorItems = { bun: null, ingredients: [] };
         }
       )
       .addCase(createOrder.rejected, (state, action) => {

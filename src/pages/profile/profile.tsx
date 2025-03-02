@@ -1,11 +1,17 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
-import { selectUser, updateUser } from '../../services/slices/authSlice';
+import {
+  selectAuthLoading,
+  selectUser,
+  updateUser
+} from '../../services/slices/authSlice';
+import { Preloader } from '@ui';
 
 export const Profile: FC = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const isLoading = useSelector(selectAuthLoading);
 
   const [formValue, setFormValue] = useState({
     name: user?.name || '',
@@ -47,7 +53,10 @@ export const Profile: FC = () => {
     }));
   };
 
-  console.log('Монтируем Профиль!');
+  if (isLoading) {
+    return <Preloader />;
+  }
+
   return (
     <ProfileUI
       formValue={formValue}

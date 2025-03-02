@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { getFeedsApi } from '@api';
-import { TOrdersData } from '@utils-types';
+import { getFeedsApi, getOrderByNumberApi } from '@api';
+import { TOrder, TOrdersData } from '@utils-types';
 
 type TFeedState = {
   orders: TOrdersData['orders'];
@@ -30,6 +30,23 @@ export const fetchOrders = createAsyncThunk<
   }
 });
 
+export const fetchOrderById = createAsyncThunk<TOrder, string>(
+  'feed/fetchOrderById',
+  async (orderId, { rejectWithValue }) => {
+    try {
+      const response = await getOrderByNumberApi(Number(orderId));
+
+      if (!response.orders.length) {
+        return rejectWithValue('Заказ не найден');
+      }
+
+      return response.orders[0];
+    } catch (err) {
+      return rejectWithValue('Ошибка загрузки заказа');
+    }
+  }
+);
+
 const feedSlice = createSlice({
   name: 'feed',
   initialState,
@@ -52,6 +69,18 @@ const feedSlice = createSlice({
       .addCase(fetchOrders.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload ?? 'Неизвестная ошибка';
+      })
+      .addCase(
+        fetchOrderById.fulfilled,
+        (state, action: PayloadAction<TOrder>) => {
+          state.orders.push(action.payload);
+        }
+      )
+      .addCase(fetchOrderById.rejected, (state, action) => {
+        state.error =
+          typeof action.payload === 'string'
+            ? action.payload
+            : 'Неизвестная ошибка';
       });
   }
 });

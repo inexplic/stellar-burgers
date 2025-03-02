@@ -9,7 +9,7 @@ type ProtectedRouteProps = {
   children: React.ReactElement;
 };
 
-const ProtectedRoute: FC<ProtectedRouteProps> = ({ onlyUnAuth }) => {
+const ProtectedRoute: FC<ProtectedRouteProps> = ({ onlyUnAuth, children }) => {
   const user = useSelector(selectUser);
   const isAuthChecked = useSelector(selectIsAuthChecked);
   const location = useLocation();
@@ -18,17 +18,15 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({ onlyUnAuth }) => {
     return <Preloader />;
   }
 
-  // Скрыть страницу от авторизованных пользователей
   if (onlyUnAuth && user) {
     return <Navigate to={location.state?.from || { pathname: '/' }} replace />;
   }
 
-  // Редирект на логин
   if (!onlyUnAuth && !user) {
-    return <Navigate to='/login' replace state={{ from: location }} />;
+    return <Navigate to='/login' replace />;
   }
 
-  return <Outlet />;
+  return children || <Outlet />;
 };
 
 export default ProtectedRoute;
