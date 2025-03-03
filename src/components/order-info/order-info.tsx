@@ -2,7 +2,7 @@ import { FC, useEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
 import { fetchOrderById, selectFeed } from '../../services/slices/feedSlice';
 import { selectIngredients } from '../../services/slices/ingredientsSlice';
@@ -10,10 +10,13 @@ import { selectIngredients } from '../../services/slices/ingredientsSlice';
 export const OrderInfo: FC = () => {
   const { number } = useParams();
   const dispatch = useDispatch();
+  const location = useLocation();
   const { orders, isLoading } = useSelector(selectFeed);
   const ingredients = useSelector(selectIngredients);
 
   let orderData = orders.find((order) => String(order.number) === number);
+
+  const isModal = location.state?.background;
 
   useEffect(() => {
     if (!orderData && number) {
@@ -72,5 +75,5 @@ export const OrderInfo: FC = () => {
     return <Preloader />;
   }
 
-  return <OrderInfoUI orderInfo={orderInfo} />;
+  return <OrderInfoUI orderInfo={orderInfo} isModal={!!isModal} />;
 };

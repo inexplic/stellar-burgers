@@ -107,12 +107,7 @@ const App = () => {
           <Route
             path='/ingredients/:id'
             element={
-              <Modal
-                title={'Детали ингредиента'}
-                onClose={function (): void {
-                  navigate(-1);
-                }}
-              >
+              <Modal title={'Детали ингредиента'} onClose={() => navigate(-1)}>
                 <IngredientDetails />
               </Modal>
             }
@@ -121,10 +116,9 @@ const App = () => {
             path='/feed/:number'
             element={
               <Modal
-                title={''}
-                onClose={function (): void {
-                  navigate(-1);
-                }}
+                title={`#${location.pathname.split('/').pop()}`}
+                onClose={() => navigate(-1)}
+                titleClassName='text text_type_digits-default'
               >
                 <OrderInfo />
               </Modal>
@@ -134,7 +128,11 @@ const App = () => {
             path='/profile/orders/:number'
             element={
               <ProtectedRoute>
-                <Modal title={''} onClose={() => navigate(-1)}>
+                <Modal
+                  title={`#${location.pathname.split('/').pop()}`}
+                  onClose={() => navigate(-1)}
+                  titleClassName='text text_type_digits-default'
+                >
                   <OrderInfo />
                 </Modal>
               </ProtectedRoute>
