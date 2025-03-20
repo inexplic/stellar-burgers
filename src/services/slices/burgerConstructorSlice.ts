@@ -7,7 +7,7 @@ type TConstructorItems = {
   ingredients: TConstructorIngredient[];
 };
 
-type TBurgerConstructorState = {
+export type TBurgerConstructorState = {
   constructorItems: TConstructorItems;
   orderRequest: boolean;
   orderModalData: TOrder | null;
