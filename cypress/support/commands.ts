@@ -35,3 +35,14 @@
 //     }
 //   }
 // }
+
+declare namespace Cypress {
+    interface Chainable {
+      getIngredients(): Chainable<JQuery<HTMLElement>>;
+    }
+  }
+  
+  Cypress.Commands.add('getIngredients', () => {
+    return cy.get('[data-cy=constructor-ingredients]');
+  });
+  

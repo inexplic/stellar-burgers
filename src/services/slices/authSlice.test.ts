@@ -6,7 +6,8 @@ import reducer, {
   updateUser,
   checkUserAuth,
   authChecked,
-  TAuthState
+  TAuthState,
+  initialState
 } from './authSlice';
 import { TUser } from '@utils-types';
 
@@ -26,14 +27,6 @@ jest.mock('../../utils/cookie', () => ({
 }));
 
 describe('authSlice', () => {
-  const initialState: TAuthState = {
-    user: null,
-    isLoading: false,
-    isAuthenticated: false,
-    isAuthChecked: false,
-    error: null
-  };
-
   it('должен вернуть initial state', () => {
     expect(reducer(undefined, { type: '' })).toEqual(initialState);
   });

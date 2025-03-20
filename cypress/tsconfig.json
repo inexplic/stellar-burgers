@@ -10,5 +10,5 @@
     "include": [
       "../node_modules/cypress",
       "./**/*.ts"
-, "e2e/order.cy.tsx"    ]
+, "e2e/order.cy.tsx", "e2e/constructor.cy.tsx"    ]
   }
