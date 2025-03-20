@@ -12,7 +12,7 @@ import {
 } from '@api';
 import { RootState } from '../store';
 
-type TAuthState = {
+export type TAuthState = {
   user: TUser | null;
   isLoading: boolean;
   isAuthenticated: boolean;
